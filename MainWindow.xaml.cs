@@ -27,31 +27,34 @@ namespace CaesarCipher
             'a','á' ,'b' ,'c' ,'č' ,'d' ,'ď' ,'e' ,'é' ,'ě' ,'f',
             'g' ,'h' ,'i' ,'í' ,'j' ,'k' ,'l' ,'m' ,'n' ,'ň' ,'o',
             'ó' ,'p' ,'q' ,'r' ,'ř' ,'s','š' ,'t' ,'ť' ,'u' ,'ú' ,
-            'ů' ,'v' , 'w', 'x', 'y', 'ý', 'z', 'ž'
+            'ů' ,'v' , 'w', 'x', 'y', 'ý', 'z', 'ž', ' ', '.', ',', '?', '!', ':', '-'
         }; //Would like to see that in mandarin XD
 
-        public MainWindow()
-        {
-            InitializeComponent();
-            numberOfCpuThreads = InitialSetup();
-        }
+        CaesarEncrytion caesarCipher;
 
-        private int InitialSetup()
+        private void InitialSetup(int cpuThreads)
         {
-            var cpuThreads = Environment.ProcessorCount;
-
+            //add number of threads to combobox
             for (int i = 1; i <= cpuThreads; i++)
                 comboBoxThreadsSel.Items.Add(i);
 
+            //add shifts to combobox
             for (int i = 1; i <= numberOfCharShifts; i++)
                 comboBoxCharShift.Items.Add(i);
 
-            return cpuThreads;
+            caesarCipher = new CaesarEncrytion();
+        }
+
+        public MainWindow()
+        {
+            numberOfCpuThreads = Environment.ProcessorCount;
+            InitializeComponent();
+            InitialSetup(numberOfCpuThreads);
         }
 
         private void buttonSingleThread_Click(object sender, RoutedEventArgs e)
         {
-
+            textboxtOutput.Text = caesarCipher.SingleThreaded(textboxtInput.Text);
         }
 
         private void buttonMultithreading_Click(object sender, RoutedEventArgs e)
