@@ -14,6 +14,7 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="0.15*"/>
         </Grid.RowDefinitions>
+        
         <!--User input part-->
         <Label Grid.Row="0" Content="Vstup pro zašifrování:"/>
         <ScrollViewer Grid.Row="1">
@@ -27,17 +28,15 @@
         </ScrollViewer>
 
         <!--User control part-->
-        <StackPanel Grid.Row="4" HorizontalAlignment="Right" Orientation="Horizontal" Margin="6">
+        <StackPanel Grid.Row="4" HorizontalAlignment="Right" VerticalAlignment="Center" Orientation="Horizontal" Margin="6">
             <!--Select char shift-->
             <Label Content="Posunití o: "/>
-            <ComboBox x:Name="comboBoxCharShift" MaxHeight="35" Width="50">
-            </ComboBox>
+            <ComboBox x:Name="comboBoxCharShift" MaxHeight="35" Width="50" ItemsSource="{Binding}" SelectedIndex="0"/>
             <Label Content="znaků."/>
 
             <!--Select number of threads for multithreading encryption-->
             <Label Content="    Počet vláken pro zašifrování:"/>
-            <ComboBox x:Name="comboBoxThreadsSel" MaxHeight="35" Width="90">
-            </ComboBox>
+            <ComboBox x:Name="comboBoxThreadsSel" MaxHeight="35" Width="90" ItemsSource="{Binding}" SelectedIndex="0"/>
 
             <!--Buttons for action-->
             <Button x:Name="buttonMultithreading" Content=" Zašifruj (více jader) " Margin="10,0" MaxHeight="35" Click="buttonMultithreading_Click"/>
