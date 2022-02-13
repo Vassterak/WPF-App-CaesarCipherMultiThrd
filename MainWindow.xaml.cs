@@ -42,7 +42,7 @@ namespace CaesarCipher
             for (int i = 1; i <= numberOfCharShifts; i++)
                 comboBoxCharShift.Items.Add(i);
 
-            caesarCipher = new CaesarEncrytion();
+            caesarCipher = new CaesarEncrytion(alphabetSet);
         }
 
         public MainWindow()
