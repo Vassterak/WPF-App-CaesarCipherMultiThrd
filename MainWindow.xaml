@@ -24,7 +24,7 @@
         <!--User output part-->
         <Label Grid.Row="2" Content="Zašifrovaný obsah:"/>
         <ScrollViewer Grid.Row="3">
-            <TextBox x:Name="textboxtOutput" Background="#FFECECEC" IsReadOnly="True"/>
+            <TextBox x:Name="textboxtOutput" Background="#FFECECEC" IsReadOnly="True" TextWrapping="Wrap"/>
         </ScrollViewer>
 
         <!--User control part-->
