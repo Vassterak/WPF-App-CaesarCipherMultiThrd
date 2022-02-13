@@ -35,8 +35,17 @@ namespace CaesarCipher
         private void InitialSetup(int cpuThreads)
         {
             //add number of threads to combobox
-            for (int i = 1; i <= cpuThreads; i++)
-                comboBoxThreadsSel.Items.Add(i);
+            if (cpuThreads > 1)
+            {
+                for (int i = 2; i <= cpuThreads; i++)
+                    comboBoxThreadsSel.Items.Add(i);
+            }
+
+            else
+            {
+                comboBoxThreadsSel.Items.Add("Není podporováno.");
+                buttonMultithreading.IsEnabled = false;
+            }
 
             //add shifts to combobox
             for (int i = 1; i <= numberOfCharShifts; i++)
@@ -44,16 +53,33 @@ namespace CaesarCipher
 
             caesarCipher = new CaesarEncrytion(alphabetSet);
         }
+        private bool CheckUserInput()
+        {
+            if (textboxtInput.Text.Length > 3)
+                return true;
+
+            else
+            {
+                MessageBox.Show("Vstup nesmí být prázdný, nebo příliš krátký!");
+                return false;
+            }
+        }
 
         private void RunSingleThread()
         {
-            caesarCipher.CharShift = comboBoxCharShift.SelectedIndex + 1;
-            textboxtOutput.Text = caesarCipher.SingleThreaded(textboxtInput.Text);
+            if (CheckUserInput())
+            {
+                caesarCipher.CharShift = comboBoxCharShift.SelectedIndex + 1;
+                textboxtOutput.Text = caesarCipher.SingleThreaded(textboxtInput.Text);
+            }
         }
 
         private void RunMultiThread()
         {
+            if (CheckUserInput())
+            {
 
+            }
         }
 
         public MainWindow()
