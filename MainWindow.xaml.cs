@@ -24,5 +24,15 @@ namespace CaesarCipher
         {
             InitializeComponent();
         }
+
+        private void buttonSingleThread_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void buttonMultithreading_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

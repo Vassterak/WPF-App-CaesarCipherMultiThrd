@@ -6,7 +6,37 @@
         xmlns:local="clr-namespace:CaesarCipher"
         mc:Ignorable="d"
         Title="Caesarova šifra" MinHeight="600" MinWidth="800" ResizeMode="CanResize">
-    <Grid>
-        
-      </Grid>
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="0.1*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="0.1*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="0.15*"/>
+        </Grid.RowDefinitions>
+
+        <Label Grid.Row="0" Content="Vstup pro zašifrování:"/>
+        <ScrollViewer Grid.Row="1">
+            <TextBox x:Name="textboxtInput" Background="#FFECECEC" AcceptsReturn="True" TextWrapping="Wrap"/>
+        </ScrollViewer>
+
+        <Label Grid.Row="2" Content="Zašifrovaný obsah:"/>
+        <ScrollViewer Grid.Row="3">
+            <TextBox x:Name="textboxtOutput" Background="#FFECECEC" IsReadOnly="True"/>
+        </ScrollViewer>
+
+        <StackPanel Grid.Row="4" HorizontalAlignment="Right" Orientation="Horizontal" Margin="6">
+            <Label Content="Posunití o: "/>
+            <ComboBox x:Name="comboBoxCharShift" MaxHeight="35" Width="50">
+                
+            </ComboBox>
+            <Label Content="znaků."/>
+            <Label Content="    Počet vláken pro zašifrování:"/>
+            <ComboBox x:Name="comboBoxThreadsSel" MaxHeight="35" Width="90">
+            </ComboBox>
+            <Button x:Name="buttonMultithreading" Content=" Zašifruj (více jader) " Margin="10,0" MaxHeight="35" Click="buttonMultithreading_Click"/>
+            <Button x:Name="buttonSingleThread" Content=" Zašifruj (jedno jádo) " Margin="10,0" MaxHeight="35" Click="buttonSingleThread_Click"/>
+        </StackPanel>
+
+    </Grid>
 </Window>
