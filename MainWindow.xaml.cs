@@ -45,6 +45,17 @@ namespace CaesarCipher
             caesarCipher = new CaesarEncrytion(alphabetSet);
         }
 
+        private void RunSingleThread()
+        {
+            caesarCipher.CharShift = comboBoxCharShift.SelectedIndex + 1;
+            textboxtOutput.Text = caesarCipher.SingleThreaded(textboxtInput.Text);
+        }
+
+        private void RunMultiThread()
+        {
+
+        }
+
         public MainWindow()
         {
             numberOfCpuThreads = Environment.ProcessorCount;
@@ -54,12 +65,12 @@ namespace CaesarCipher
 
         private void buttonSingleThread_Click(object sender, RoutedEventArgs e)
         {
-            textboxtOutput.Text = caesarCipher.SingleThreaded(textboxtInput.Text);
+            RunSingleThread();
         }
 
         private void buttonMultithreading_Click(object sender, RoutedEventArgs e)
         {
-
+            RunMultiThread();
         }
     }
 }

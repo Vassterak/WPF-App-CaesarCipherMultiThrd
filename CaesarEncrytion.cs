@@ -9,8 +9,8 @@ namespace CaesarCipher
     {
         private int[] manipulatedText;
         private readonly char[] alphabet;
-        private int charShift = 4;
-        private int CharShift
+        private int charShift = 0;
+        public int CharShift
         {
             get { return charShift; }
             set
@@ -34,7 +34,7 @@ namespace CaesarCipher
             catch (Exception e)
             {
                 MessageBox.Show(e.ToString(),"Chyba!");
-                return "";
+                return "Error";
             }
         }
 
@@ -56,51 +56,35 @@ namespace CaesarCipher
 
                     else if (inpuText[i] == alphabet[j])
                     {
-                        manipulatedText[i] = j;
+                        manipulatedText[i] = ShiftLetter(j);
                         break;
                     }
                 }
             }
         }
 
-        private void ShiftLetters()
+        private int ShiftLetter(int j)
         {
-            for (int i = 0; i < manipulatedText.Length; i++)
-            {
-                if (manipulatedText[i] + charShift >= alphabet.Length)
-                    manipulatedText[i] = manipulatedText[i] + charShift - alphabet.Length;
+            if (j + charShift >= alphabet.Length)
+                return j + charShift - alphabet.Length;
 
-                else
-                    manipulatedText[i] += charShift;
-            }
+            else
+                return j + charShift;
         }
 
         private string ConvertBackToChars()
         {
             string output = "";
             for (int i = 0; i < manipulatedText.Length; i++)
-            {
                 output += alphabet[manipulatedText[i]];
-            }
+
             return output;
         }
 
         public string SingleThreaded(string userInputText)
         {
             ConvertText(TextToLower(userInputText));
-            ShiftLetters();
-
-            //string output = "";
-            //foreach (var item in manipulatedText)
-            //{
-            //    output += item.ToString() + " ";
-            //}
-            //output += "délka: " +  alphabet.Length;
-            //output += "znak: -" + alphabet[47];
-            //return output;
-
             return ConvertBackToChars();
-            //return TextToLower(userInputText);
         }
     }
 }
