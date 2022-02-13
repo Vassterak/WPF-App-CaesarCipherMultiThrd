@@ -27,7 +27,7 @@ namespace CaesarCipher
             'a','á' ,'b' ,'c' ,'č' ,'d' ,'ď' ,'e' ,'é' ,'ě' ,'f',
             'g' ,'h' ,'i' ,'í' ,'j' ,'k' ,'l' ,'m' ,'n' ,'ň' ,'o',
             'ó' ,'p' ,'q' ,'r' ,'ř' ,'s','š' ,'t' ,'ť' ,'u' ,'ú' ,
-            'ů' ,'v' , 'w', 'x', 'y', 'ý', 'z', 'ž', ' ', '.', ',', '?', '!', ':', '-'
+            'ů' ,'v' , 'w', 'x', 'y', 'ý', 'z', 'ž', ' ', '.', ',', '?', '!', ':', '-', ';'
         }; //Would like to see that in mandarin XD
 
         CaesarEncrytion caesarCipher;

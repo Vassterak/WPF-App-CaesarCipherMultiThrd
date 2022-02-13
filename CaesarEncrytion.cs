@@ -59,6 +59,15 @@ namespace CaesarCipher
                         manipulatedText[i] = ShiftLetter(j);
                         break;
                     }
+
+                    else if (inpuText[i] == '\r') //check for new line (need to be this way because Windows is using /r/n for line termination)
+                    {
+                        i += 1; //No need remove chars just skip them (it's faster)
+                        break;
+                        //Now it's removing new line. (just easier to handle, for future this should handle the newline so it could be implemented into cipher)
+                        //if (inpuText.Substring(i, 2) == "\r\n") 
+                        //   inpuText = inpuText.Remove(i, 2);
+                    }
                 }
             }
         }
