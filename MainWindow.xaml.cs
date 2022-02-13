@@ -31,6 +31,7 @@ namespace CaesarCipher
         }; //Would like to see that in mandarin XD
 
         SingleThreadCipher cipherSingleThread;
+        MultiThreadCipher cipherMultiThread;
 
         private void InitialSetup(int cpuThreads)
         {
@@ -52,6 +53,7 @@ namespace CaesarCipher
                 comboBoxCharShift.Items.Add(i);
 
             cipherSingleThread = new SingleThreadCipher(alphabetSet);
+            cipherMultiThread = new MultiThreadCipher(alphabetSet);
         }
         private bool CheckUserInput()
         {
@@ -78,7 +80,8 @@ namespace CaesarCipher
         {
             if (CheckUserInput())
             {
-
+                cipherMultiThread.NumberOfThreads = (int)comboBoxThreadsSel.SelectedValue;
+                textboxtOutput.Text = cipherMultiThread.MultiThreaded(textboxtInput.Text);
             }
         }
 
