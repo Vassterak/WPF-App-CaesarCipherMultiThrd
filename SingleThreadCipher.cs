@@ -5,7 +5,7 @@ using System.Windows;
 
 namespace CaesarCipher
 {
-    internal class CaesarEncrytion
+    internal class SingleThreadCipher
     {
         private int[] manipulatedText;
         private readonly char[] alphabet;
@@ -20,7 +20,7 @@ namespace CaesarCipher
             }
         }
 
-        public CaesarEncrytion(char[] currentAplhabet)
+        public SingleThreadCipher(char[] currentAplhabet)
         {
             alphabet = currentAplhabet;
         }

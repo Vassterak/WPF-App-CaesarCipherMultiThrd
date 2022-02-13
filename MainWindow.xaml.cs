@@ -30,7 +30,7 @@ namespace CaesarCipher
             'ů' ,'v' , 'w', 'x', 'y', 'ý', 'z', 'ž', ' ', '.', ',', '?', '!', ':', '-', ';'
         }; //Would like to see that in mandarin XD
 
-        CaesarEncrytion caesarCipher;
+        SingleThreadCipher cipherSingleThread;
 
         private void InitialSetup(int cpuThreads)
         {
@@ -51,7 +51,7 @@ namespace CaesarCipher
             for (int i = 1; i <= numberOfCharShifts; i++)
                 comboBoxCharShift.Items.Add(i);
 
-            caesarCipher = new CaesarEncrytion(alphabetSet);
+            cipherSingleThread = new SingleThreadCipher(alphabetSet);
         }
         private bool CheckUserInput()
         {
@@ -69,8 +69,8 @@ namespace CaesarCipher
         {
             if (CheckUserInput())
             {
-                caesarCipher.CharShift = comboBoxCharShift.SelectedIndex + 1;
-                textboxtOutput.Text = caesarCipher.SingleThreaded(textboxtInput.Text);
+                cipherSingleThread.CharShift = comboBoxCharShift.SelectedIndex + 1;
+                textboxtOutput.Text = cipherSingleThread.SingleThreaded(textboxtInput.Text);
             }
         }
 
