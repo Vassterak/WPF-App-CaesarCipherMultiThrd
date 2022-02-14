@@ -9,7 +9,8 @@ namespace CaesarCipher
     internal class MultiThreadCipher
     {
         private readonly char[] alphabet;
-        private int numberOfThreads = 2;
+        private int numberOfThreads = 2, oneBlockSize, lefoverChars;
+
         public int NumberOfThreads
         {
             get { return numberOfThreads; }
@@ -30,24 +31,25 @@ namespace CaesarCipher
         private void ChopTextToBlocks(string inputText)
         {
             blockSizes = new List<int>();
-            int oneBlockSize = inputText.Length / numberOfThreads;
-            int lefoverChars = inputText.Length % numberOfThreads;
+            oneBlockSize = inputText.Length / numberOfThreads;
+            lefoverChars = inputText.Length % numberOfThreads;
 
-            for (int i = 0; i < numberOfThreads-1; i++)
-            {
-                blockSizes.Add(oneBlockSize);
-            }
-            blockSizes.Add(oneBlockSize + lefoverChars);
+            for (int i = 1; i < numberOfThreads; i++)
+                blockSizes.Add(i * oneBlockSize - 1);
+
+            blockSizes.Add(numberOfThreads * oneBlockSize + lefoverChars -1);
 
             string output = "";
 
             foreach (var item in blockSizes)
-            {
                 output += item.ToString() + "\r\n";
-            }
-            MessageBox.Show(output);
 
-            MessageBox.Show("Left overs: "+ lefoverChars.ToString());
+            MessageBox.Show($"number of chars: {inputText.Length}\n {output}\n Left overs:+ {lefoverChars.ToString()}");
+        }
+
+        private void ConvertText(int fromIndex, int toIndex)
+        {
+
         }
 
         private void ThreadsInit()
@@ -56,14 +58,9 @@ namespace CaesarCipher
 
             for (int i = 0; i < threads.Length; i++)
             {
-                threads[i] = new Thread(() => ConvertText());
+                threads[i] = new Thread(() => ConvertText( i * oneBlockSize, oneBlockSize));
                 threads[i].Start();
             }
-        }
-
-        private void ConvertText()
-        {
-
         }
 
         public string MultiThreaded(string userInputText)
