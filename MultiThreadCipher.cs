@@ -73,11 +73,15 @@ namespace CaesarCipher
             for (int i = 0; i < threads.Length; i++)
             {
                 if (i == 0)
+                {
                     threads[i] = new Thread(() => SeparateTextToBlocks(inputText, i, blockBorderIndexes[i], blockBorderIndexes[i + 1])); //first block need to start from zero because of block separation by indexes and it prevents from overlapping.
+                }
                 else
+                {
                     threads[i] = new Thread(() => SeparateTextToBlocks(inputText, i, blockBorderIndexes[i] + 1, blockBorderIndexes[i + 1]));
-
+                }
                 threads[i].Start();
+                threads[i].Join();
             }
 
             SeparateTextToBlocks(inputText, threads.Length, blockBorderIndexes[threads.Length] + 1, blockBorderIndexes[threads.Length + 1]); //Run last method on default thread thats assigned to this app
@@ -87,10 +91,7 @@ namespace CaesarCipher
         public string MultiThreaded(string userInputText)
         {
             CreateBlockIndexes(userInputText);
-            foreach (var item in threads)
-            {
-                item.Join();
-            }
+
             string output = "";
             foreach (string item in blockText)
             {
