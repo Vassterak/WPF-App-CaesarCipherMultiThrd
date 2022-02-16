@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Windows;
 using System.Threading;
+using System.Windows;
 
 namespace CaesarCipher
 {
@@ -13,8 +11,8 @@ namespace CaesarCipher
         private int[] manipulatedText;
 
         private Thread[] threads; //hold the number of selected threads
-        private List<int> blockSizesIndexes; //hold the ending index of each block, first position is calculated
-        private string[] blockTextParts; //chopped main string into cumputable blocks
+        private int[] blockSize; //hold the ending index of each block, first position is calculated and final values is size of each block
+        private string[] blockText; //chopped main string into cumputable blocks
         public int NumberOfThreads
         {
             get { return numberOfThreads; }
@@ -24,7 +22,6 @@ namespace CaesarCipher
                     numberOfThreads = value;
             }
         }
-
         public MultiThreadCipher(char[] currentAlphabet)
         {
             alphabet = currentAlphabet;
@@ -33,31 +30,21 @@ namespace CaesarCipher
         //SINGLE THREAD
         private void CreateBlockIndexes(string inputText)
         {
-            blockSizesIndexes = new List<int>();
-            blockTextParts = new string[numberOfThreads];
+            //Array initialization
+            blockSize = new int[numberOfThreads+1];
+            blockText = new string[numberOfThreads];
 
-            //set sizes
+            //set size of one block and get leftover values from division
             oneBlockSize = inputText.Length / numberOfThreads;
             lefoverChars = inputText.Length % numberOfThreads;
 
             for (int i = 1; i < numberOfThreads; i++)
-                blockSizesIndexes.Add(i * oneBlockSize - 1);
+                blockSize[i] = (i * oneBlockSize - 1);
 
-            blockSizesIndexes.Add(numberOfThreads * oneBlockSize + lefoverChars -1);
+            //set left over values to last block
+            blockSize[numberOfThreads] = (numberOfThreads * oneBlockSize + lefoverChars -1);
 
-            //string output = "";
-            //foreach (var item in blockSizesIndexes)
-            //    output += item.ToString() + "\r\n";
-            //MessageBox.Show($"number of chars: {inputText.Length}\n {output}\n Left overs:+ {lefoverChars.ToString()}");
             ThreadsInitialization(inputText);
-        }
-
-        //MULTI THREAD
-        private void SoftTextToBlocks(string inputText, int arrayIndex, int fromIndex, int toIndex)
-        {
-            blockTextParts[arrayIndex] = inputText.Substring(fromIndex, toIndex - fromIndex); //separete huge text into smaller blocks
-            blockTextParts[arrayIndex] = TextToLower(blockTextParts[arrayIndex]); //set whole block to lowercase letters
-            MessageBox.Show("Show block: " + blockTextParts[arrayIndex]);
         }
 
         //MULTI THREAD
@@ -74,22 +61,33 @@ namespace CaesarCipher
             }
         }
 
+        //MULTI THREAD
+        private void SoftTextToBlocks(string inputText, int arrayIndex, int fromIndex, int toIndex)
+        {
+            blockText[arrayIndex] = inputText.Substring(fromIndex, toIndex - fromIndex); //separete huge text into smaller blocks
+            blockText[arrayIndex] = TextToLower(blockText[arrayIndex]); //set whole block to lowercase letters
+            MessageBox.Show("Show block: " + blockText[arrayIndex]);
+        }
+
         private void ThreadsInitialization(string inputText)
         {
             threads = new Thread[numberOfThreads];
 
-            MessageBox.Show($"Zero index: {0} - {blockSizesIndexes[0]}");
-            threads[0] = new Thread(() => SoftTextToBlocks(inputText, 0, 0, blockSizesIndexes[0])); //Create first thread
-            threads[0].Name = "ZeroThread";
-            threads[0].Start();
-
-            for (int i = 1; i < numberOfThreads; i++) //Create the rest of the threads
+            for (int i = 0; i < numberOfThreads; i++) //Create the rest of the threads
             {
                 MessageBox.Show($"Cyklus jde s indexem: {i}");
-                threads[i] = new Thread(() => SoftTextToBlocks(inputText, i, blockSizesIndexes[i-1], blockSizesIndexes[i]));
-                threads[i].Name = $"ThreadNumber{i}";
-                MessageBox.Show($"Current index: {blockSizesIndexes[i - 1]+1} - {blockSizesIndexes[i]}");
-                threads[i].Start();
+
+                if (i == 0)
+                {
+                    threads[i] = new Thread(() => SoftTextToBlocks(inputText, i, blockSize[i], blockSize[i + 1]));
+                    MessageBox.Show($"Current index: {blockSize[i]} - {blockSize[i + 1]}");
+                }
+
+                else
+                {
+                    threads[i] = new Thread(() => SoftTextToBlocks(inputText, i, blockSize[i]+1, blockSize[i + 1]));
+                    MessageBox.Show($"Current index: {blockSize[i]+1} - {blockSize[i + 1]}");
+                }
             }
         }
 
@@ -97,6 +95,10 @@ namespace CaesarCipher
         public string MultiThreaded(string userInputText)
         {
             CreateBlockIndexes(userInputText);
+            for (int i = 0; i < numberOfThreads; i++)
+            {
+                threads[i].Start();
+            }
             return "";
         }
 
