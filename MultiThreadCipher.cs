@@ -8,6 +8,7 @@ namespace CaesarCipher
     {
         private readonly char[] alphabet;
         private int numberOfThreads = 2, oneBlockSize, lefoverChars;
+        static readonly object _lockObject = new object();
 
         private Thread[] threads; //hold the number of selected threads
         private int[] blockBorderIndexes; //hold the ending index of each block
@@ -63,11 +64,15 @@ namespace CaesarCipher
         {
             blockText[arrayIndex] = inputText.Substring(fromIndex, toIndex - fromIndex); //separete huge text into smaller blocks
             blockText[arrayIndex] = TextToLower(blockText[arrayIndex]); //set whole block to lowercase letters
+            MessageBox.Show(blockText[arrayIndex], Thread.CurrentThread.Name);
         }
 
         //SINGLE THREAD
         private void ThreadsInitialization(string inputText)
         {
+            if (Thread.CurrentThread.Name == null)
+                Thread.CurrentThread.Name = "HlavniVlakno";
+
             threads = new Thread[numberOfThreads-1]; //example: When I want to use 4 threads for cipher I dont need to create new 4 threads, but just 3 because one is alreading running this code.
 
             for (int i = 0; i < threads.Length; i++)
@@ -75,13 +80,15 @@ namespace CaesarCipher
                 if (i == 0)
                 {
                     threads[i] = new Thread(() => SeparateTextToBlocks(inputText, i, blockBorderIndexes[i], blockBorderIndexes[i + 1])); //first block need to start from zero because of block separation by indexes and it prevents from overlapping.
+                    threads[i].Name = $"Vlakno{i}";
                 }
                 else
                 {
                     threads[i] = new Thread(() => SeparateTextToBlocks(inputText, i, blockBorderIndexes[i] + 1, blockBorderIndexes[i + 1]));
+                    threads[i].Name = $"Vlakno{i}";
                 }
                 threads[i].Start();
-                threads[i].Join();
+                //threads[i].Join();
             }
 
             SeparateTextToBlocks(inputText, threads.Length, blockBorderIndexes[threads.Length] + 1, blockBorderIndexes[threads.Length + 1]); //Run last method on default thread thats assigned to this app
@@ -92,11 +99,23 @@ namespace CaesarCipher
         {
             CreateBlockIndexes(userInputText);
 
+            foreach (Thread item in threads)
+                item.Join();
+
             string output = "";
-            foreach (string item in blockText)
+            //for (int i = 0; i < blockText.Length; i++)
+            //{
+            //    if (i == blockText.Length - 1)
+            //        output += threads[i-1].Name + "|" + blockText[i] + "\n";
+            //    else
+            //        output += threads[i].Name + "|" + blockText[i] + "\n";
+            //}
+
+            foreach (var item in blockText)
             {
-                output += "0: " + item + "\n";
+                output += "|" + item + "\n";
             }
+
             MessageBox.Show(output);
             return "";
         }
