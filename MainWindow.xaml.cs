@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -32,6 +33,7 @@ namespace CaesarCipher
 
         SingleThreadCipher cipherSingleThread;
         MultiThreadCipher cipherMultiThread;
+        Stopwatch stopWatch;
 
         private void InitialSetup(int cpuThreads)
         {
@@ -71,8 +73,12 @@ namespace CaesarCipher
         {
             if (CheckUserInput())
             {
+                stopWatch.Start();
                 cipherSingleThread.CharShift = comboBoxCharShift.SelectedIndex + 1;
                 textboxtOutput.Text = cipherSingleThread.SingleThreaded(textboxtInput.Text);
+                stopWatch.Stop();
+                MessageBox.Show("Běh trval: " + stopsWatch.ElapsedMilliseconds.ToString() + " ms");
+                stopWatch.Reset();
             }
         }
 
@@ -80,8 +86,12 @@ namespace CaesarCipher
         {
             if (CheckUserInput())
             {
+                stopWatch.Start();
                 cipherMultiThread.NumberOfThreads = (int)comboBoxThreadsSel.SelectedValue;
                 textboxtOutput.Text = cipherMultiThread.MultiThreaded(textboxtInput.Text);
+                stopWatch.Stop();
+                MessageBox.Show("Běh trval: " + stopWatch.ElapsedMilliseconds.ToString() + " ms");
+                stopWatch.Reset();
             }
         }
 
@@ -90,6 +100,7 @@ namespace CaesarCipher
             numberOfCpuThreads = Environment.ProcessorCount;
             InitializeComponent();
             InitialSetup(numberOfCpuThreads);
+            stopWatch = new Stopwatch();
         }
 
         private void buttonSingleThread_Click(object sender, RoutedEventArgs e)
