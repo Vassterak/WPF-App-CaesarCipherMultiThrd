@@ -49,7 +49,7 @@ namespace CaesarCipher
                     //Check letter in the text if it is supported char in the alphabet.
                     if (j == alphabet.Length)
                     {
-                        MessageBox.Show($"Nepodporovaný znak: {inpuText[i]} Prosím nahraď ho.", "Chyba!");
+                        MessageBox.Show($"Nepodporovaný znak: {inpuText[i]}. Index: {i} Prosím nahraď ho.", "Chyba!");
                         Array.Clear(manipulatedText, 0, inpuText.Length);
                         return;
                     }

@@ -90,7 +90,7 @@ namespace CaesarCipher
                     //Check letter in the text if it is supported char in the alphabet.
                     if (j == alphabet.Length)
                     {
-                        MessageBox.Show($"Nepodporovaný znak: {blockText[blockTextIndex][i]} Prosím nahraï ho.", "Chyba!");
+                        MessageBox.Show($"Nepodporovaný znak: {blockText[blockTextIndex][i]}, Index bloku: {blockTextIndex}, Index v bloku{i} Prosím nahraï ho.", "Chyba!");
                         Array.Clear(blockForConversion, 0, blockText[blockTextIndex].Length);
                         return;
                     }
