@@ -9,27 +9,23 @@ namespace CaesarCipher
     {
         private readonly char[] alphabet;
         private int numberOfThreads = 2, oneBlockSize, lefoverChars;
-        static readonly object _lockObject = new object();
 
         private Thread[] threads; //hold the number of selected threads
         private int[] blockBorderIndexes; //hold the ending index of each block
         private string[] blockText; //chopped main string into cumputable blocks
+
         public int NumberOfThreads
         {
             get { return numberOfThreads; }
 
-            set {if (value <= Environment.ProcessorCount && value > 1) numberOfThreads = value;}
+            set { if (value <= Environment.ProcessorCount && value > 1) numberOfThreads = value; }
         }
 
         private int charShift = 0;
         public int CharShift
         {
             get { return charShift; }
-            set
-            {
-                if (value < alphabet.Length && value > 0)
-                    charShift = value;
-            }
+            set { if (value < alphabet.Length && value > 0) charShift = value; }
         }
 
         public MultiThreadCipher(char[] currentAlphabet)
@@ -68,7 +64,6 @@ namespace CaesarCipher
             int[] manipulatedText = new int[blockText[arrayIndex].Length]; //create new array for each thread
             ConvertBlocks(manipulatedText, arrayIndex);
             blockText[arrayIndex] = ConvertBackToChars(manipulatedText);
-            //MessageBox.Show($"From index {fromIndex}, to index {toIndex}", Thread.CurrentThread.Name +" Index: "+ arrayIndex.ToString());
         }
 
         //MULTI THREAD
@@ -110,9 +105,6 @@ namespace CaesarCipher
                     {
                         i += 1; //No need remove chars just skip them (it's faster)
                         break;
-                        //Now it's removing new line. (just easier to handle, for future this should handle the newline so it could be implemented into cipher)
-                        //if (inpuText.Substring(i, 2) == "\r\n") 
-                        //   inpuText = inpuText.Remove(i, 2);
                     }
                 }
             }
@@ -132,6 +124,7 @@ namespace CaesarCipher
         private string ConvertBackToChars(int[] blockForConversion)
         {
             string output = "";
+
             for (int i = 0; i < blockForConversion.Length; i++)
                 output += alphabet[blockForConversion[i]];
 
@@ -149,18 +142,13 @@ namespace CaesarCipher
             for (int i = 0; i < threads.Length; i++)
             {
                 int index = i; //Need to save i to separate variable called "index" If NOT then the "threads[index].Start();" will receive different index value because the for loop will already incement it's own value.
+
                 if (i == 0)
-                {
                     threads[index] = new Thread(() => ThreadTask(inputText, index, blockBorderIndexes[index], blockBorderIndexes[index + 1])); //first block need to start from zero because of block separation by indexes and it prevents from overlapping.
-                    threads[index].Name = $"Thread {index}";
-                    //Debug.Print("for loop index: "+ index.ToString() + " Name: " + threads[index].Name);
-                }
+
                 else
-                {
                     threads[index] = new Thread(() => ThreadTask(inputText, index, blockBorderIndexes[index] + 1, blockBorderIndexes[index + 1]));
-                    threads[index].Name = $"Thread {index}";
-                    //Debug.Print(index.ToString() + " " + threads[index].Name);
-                }
+
                 threads[index].Start();
             }
 
@@ -171,12 +159,12 @@ namespace CaesarCipher
         public string MultiThreaded(string userInputText)
         {
             CreateBlockIndexes(userInputText);
-            string output = "";
 
             foreach (Thread item in threads)
                 item.Join();
 
-            foreach (var item in blockText)
+            string output = "";
+            foreach (string item in blockText)
                 output += item;
 
             return output;
