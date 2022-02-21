@@ -77,7 +77,7 @@ namespace CaesarCipher
                 cipherSingleThread.CharShift = comboBoxCharShift.SelectedIndex + 1;
                 textboxtOutput.Text = cipherSingleThread.SingleThreaded(textboxtInput.Text);
                 stopWatch.Stop();
-                MessageBox.Show("Běh trval: " + stopsWatch.ElapsedMilliseconds.ToString() + " ms");
+                MessageBox.Show("Běh trval: " + stopWatch.ElapsedMilliseconds.ToString() + " ms"); //Time includes text rendering on screen, thats propably done by single thread
                 stopWatch.Reset();
             }
         }
@@ -88,9 +88,10 @@ namespace CaesarCipher
             {
                 stopWatch.Start();
                 cipherMultiThread.NumberOfThreads = (int)comboBoxThreadsSel.SelectedValue;
+                cipherMultiThread.CharShift = comboBoxCharShift.SelectedIndex + 1;
                 textboxtOutput.Text = cipherMultiThread.MultiThreaded(textboxtInput.Text);
                 stopWatch.Stop();
-                MessageBox.Show("Běh trval: " + stopWatch.ElapsedMilliseconds.ToString() + " ms");
+                MessageBox.Show("Běh trval: " + stopWatch.ElapsedMilliseconds.ToString() + " ms"); //Time includes text rendering on screen, thats propably done by single thread
                 stopWatch.Reset();
             }
         }
