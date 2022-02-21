@@ -57,21 +57,33 @@ namespace CaesarCipher
             cipherSingleThread = new SingleThreadCipher(alphabetSet);
             cipherMultiThread = new MultiThreadCipher(alphabetSet);
         }
-        private bool CheckUserInput()
+        private bool SingleThreadCheckUserInput()
         {
             if (textboxtInput.Text.Length > 3)
                 return true;
 
             else
             {
-                MessageBox.Show("Vstup nesmí být prázdný, nebo příliš krátký!");
+                MessageBox.Show("Vstup nesmí být prázdný, a musí být delší jak 3 znaky.");
+                return false;
+            }
+        }
+
+        private bool MultiThreadCheckUserInput()
+        {
+            if (textboxtInput.Text.Length > (2 + 2 * (int)comboBoxThreadsSel.SelectedValue))
+                return true;
+
+            else
+            {
+                MessageBox.Show($"Vstup nesmí být prázdný, nebo kratší jak: {2 + 2 * (int)comboBoxThreadsSel.SelectedValue} znaků.");
                 return false;
             }
         }
 
         private void RunSingleThread()
         {
-            if (CheckUserInput())
+            if (SingleThreadCheckUserInput())
             {
                 stopWatch.Start();
                 cipherSingleThread.CharShift = comboBoxCharShift.SelectedIndex + 1;
@@ -84,7 +96,7 @@ namespace CaesarCipher
 
         private void RunMultiThread()
         {
-            if (CheckUserInput())
+            if (MultiThreadCheckUserInput())
             {
                 stopWatch.Start();
                 cipherMultiThread.NumberOfThreads = (int)comboBoxThreadsSel.SelectedValue;
