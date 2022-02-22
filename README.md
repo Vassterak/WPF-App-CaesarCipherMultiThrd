@@ -10,7 +10,7 @@ The point of this homework is to create an app that will apply this type of encr
 - 'Unlimited' thread scalability
 - Select number of threads for calculation
 - Select char shift
-- In code you can define your own alphabet
+- In code you can define your own alphabet (this cipher is **not** using char to ASCII code translation)
 
 ## What's missing?
 - Text decryption
