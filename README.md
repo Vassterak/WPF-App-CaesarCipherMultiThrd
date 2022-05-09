@@ -16,7 +16,8 @@ The point of this homework is to create an app that will apply this type of encr
 - Text decryption
 - Better input protection
 - Inport/Export of text files
-- Code optimization
+- More code optimization
+- BUG: text split on a new line because of Windows's \r\n -> program error (Not fixed!)
 
 ## Speed test
 The results should be taken with grain of salt. Test has not been conducted in laboratory controlled environment, so the result on same cpu can vary from run to run (because of background processes)  
